@@ -1,20 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { settingsApi } from '../modules/api';
-import { Moon, Sun, AlertTriangle, User } from 'lucide-react';
+import { AlertTriangle, User } from 'lucide-react';
 import '../styles/layout.css';
 
 const Topbar = () => {
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-
-    useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-    }, [theme]);
-
-    const toggleTheme = () => {
-        setTheme(prev => prev === 'light' ? 'dark' : 'light');
-    };
-
     const handlePanic = async () => {
         if (window.confirm('PANIC: Clear all simulation data?')) {
             try {
@@ -32,9 +21,6 @@ const Topbar = () => {
                 {/* Breadcrumbs could go here */}
             </div>
             <div className="actions" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <button className="btn-icon" onClick={toggleTheme} title="Toggle Theme">
-                    {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-                </button>
                 <button className="btn-primary" onClick={handlePanic} style={{ background: 'var(--error-color)', boxShadow: 'none' }}>
                     <AlertTriangle size={18} />
                     <span>Panic</span>

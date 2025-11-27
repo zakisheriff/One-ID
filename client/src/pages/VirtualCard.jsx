@@ -31,8 +31,8 @@ const VirtualCard = () => {
         setLoading(true);
         try {
             const res = await cardApi.create();
-            setCard(res.data);
-            localStorage.setItem('currentCardId', res.data.id);
+            setCard(res);
+            localStorage.setItem('currentCardId', res.id);
             setTransactions([]);
         } catch (err) {
             console.error(err);
@@ -45,7 +45,7 @@ const VirtualCard = () => {
         if (!card) return;
         try {
             const res = await cardApi.regenerate(card.id);
-            setCard(res.data);
+            setCard(res);
         } catch (err) {
             console.error(err);
         }
@@ -54,8 +54,8 @@ const VirtualCard = () => {
     const toggleLock = async () => {
         if (!card) return;
         try {
-            const res = await cardApi.lock(card.id);
-            setCard(res.data);
+            const res = await cardApi.toggleLock(card.id);
+            setCard(res);
         } catch (err) {
             console.error(err);
         }
@@ -99,9 +99,25 @@ const VirtualCard = () => {
                             </div>
 
                             {transactions.length === 0 ? (
-                                <div className="empty-transactions" style={{ textAlign: 'center', padding: '32px', color: 'var(--text-secondary)', background: 'white', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-                                    <p>No transactions yet.</p>
-                                    <p style={{ fontSize: '0.875rem', opacity: 0.7 }}>Transactions will appear here automatically.</p>
+                                <div style={{
+                                    textAlign: 'center',
+                                    padding: '48px 32px',
+                                    color: 'var(--text-tertiary)',
+                                    background: 'rgba(255, 255, 255, 0.03)',
+                                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                                    borderRadius: 'var(--radius-md)',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    gap: '16px'
+                                }}>
+                                    <div style={{ color: 'var(--accent-color)', opacity: 0.5 }}>
+                                        <Activity size={48} strokeWidth={1.5} />
+                                    </div>
+                                    <div>
+                                        <p style={{ fontSize: '1rem', marginBottom: '8px', color: 'var(--text-secondary)', margin: 0 }}>No transactions yet</p>
+                                        <p style={{ fontSize: '0.875rem', opacity: 0.7, margin: 0 }}>Transactions will appear here automatically</p>
+                                    </div>
                                 </div>
                             ) : (
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -142,15 +158,17 @@ const VirtualCard = () => {
                                         {card.locked ? 'Locked' : 'Active'}
                                     </span>
                                 </div>
+                                <br />
                                 <button className="btn-secondary" onClick={toggleLock} style={{ width: '100%' }}>
                                     {card.locked ? <Unlock size={16} /> : <Lock size={16} />}
-                                    <span style={{ marginLeft: '8px' }}>{card.locked ? 'Unlock' : 'Lock'}</span>
+                                    <span>{card.locked ? 'Unlock' : 'Lock'}</span>
                                 </button>
                             </div>
+                            <br />
                             <div className="control-item">
                                 <button className="btn-secondary" onClick={regenerateCard} style={{ width: '100%' }}>
                                     <RefreshCw size={16} />
-                                    <span style={{ marginLeft: '8px' }}>Regenerate</span>
+                                    <span>Regenerate</span>
                                 </button>
                             </div>
                         </div>

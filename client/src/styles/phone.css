@@ -1,35 +1,39 @@
 /* ============================================
-   PHONE CSS - GOOGLE FLOW STYLE
+   PHONE CSS - LIQUID GLASS STYLE
    ============================================ */
 
 .phone-layout {
     display: grid;
     grid-template-columns: 320px 1fr;
     gap: var(--spacing-lg);
-    height: calc(100vh - 140px);
+    height: calc(100vh - 160px);
 }
 
 .phone-sidebar {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
+
+    /* Glass Effect */
+    background: rgba(20, 22, 40, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: var(--radius-lg);
 }
 
 .current-number {
     padding: var(--spacing-lg);
-    border-bottom: 1px solid var(--divider-color);
-    background: var(--bg-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .current-number .label {
     font-size: 0.75rem;
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
     text-transform: uppercase;
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     margin-bottom: 8px;
     display: block;
 }
@@ -38,83 +42,44 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: white;
-    padding: 8px 12px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .number-display code {
-    font-size: 1rem;
-    color: var(--text-primary);
+    font-size: 1.1rem;
+    color: var(--warning-color);
     font-family: 'Roboto Mono', monospace;
     font-weight: 500;
+    text-shadow: 0 0 10px rgba(255, 234, 0, 0.3);
 }
 
 .message-list {
     flex: 1;
     overflow-y: auto;
-    background: var(--bg-primary);
-}
-
-.message-item {
-    padding: 16px 24px;
-    border-bottom: 1px solid var(--divider-color);
-    cursor: pointer;
-    transition: background-color var(--transition-fast);
-}
-
-.message-item:hover {
-    background-color: var(--bg-secondary);
-}
-
-.message-item.active {
-    background-color: var(--accent-light);
-}
-
-.message-sender {
-    font-weight: 500;
-    font-size: 0.9375rem;
-    margin-bottom: 4px;
-    display: flex;
-    justify-content: space-between;
-    color: var(--text-primary);
-}
-
-.message-time {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    font-weight: 400;
-}
-
-.message-preview {
-    font-size: 0.875rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--text-secondary);
-}
-
-.message-item.active .message-sender {
-    color: var(--accent-color);
 }
 
 /* Phone Content Area */
 .phone-content {
     display: flex;
     flex-direction: column;
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
+
+    /* Glass Effect */
+    background: rgba(20, 22, 40, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .chat-header {
     padding: 16px 24px;
-    border-bottom: 1px solid var(--divider-color);
-    background: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.02);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -123,13 +88,13 @@
 .chat-avatar {
     width: 40px;
     height: 40px;
-    background: var(--accent-light);
-    color: var(--accent-color);
+    background: rgba(255, 234, 0, 0.1);
+    color: var(--warning-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
+    box-shadow: 0 0 15px rgba(255, 234, 0, 0.2);
 }
 
 .chat-info h3 {
@@ -147,8 +112,6 @@
     flex: 1;
     padding: 24px;
     overflow-y: auto;
-    background: var(--bg-secondary);
-    /* Slight contrast for chat area */
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -156,27 +119,29 @@
 
 .chat-bubble {
     max-width: 70%;
-    padding: 12px 16px;
-    border-radius: 16px;
+    padding: 12px 18px;
+    border-radius: 20px;
     font-size: 0.9375rem;
     line-height: 1.5;
     position: relative;
-    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(5px);
 }
 
 .chat-bubble.received {
     align-self: flex-start;
-    background: white;
+    background: rgba(255, 255, 255, 0.08);
     color: var(--text-primary);
     border-bottom-left-radius: 4px;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .chat-bubble.sent {
     align-self: flex-end;
-    background: var(--accent-color);
-    color: white;
+    background: var(--accent-gradient);
+    color: #000;
     border-bottom-right-radius: 4px;
+    box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
+    font-weight: 500;
 }
 
 .bubble-time {
@@ -185,6 +150,12 @@
     opacity: 0.7;
     text-align: right;
     display: block;
+}
+
+.chat-footer {
+    padding: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .empty-state {
@@ -201,9 +172,17 @@
 @media (max-width: 768px) {
     .phone-layout {
         grid-template-columns: 1fr;
+        height: calc(100vh - 200px);
+        /* Adjust for bottom nav */
     }
 
     .phone-content {
+        display: flex;
+        /* Override default none */
+    }
+
+    .phone-sidebar.hidden,
+    .phone-content.hidden {
         display: none;
     }
 }

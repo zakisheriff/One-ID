@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { emailApi } from '../modules/api';
 import { joinRoom, onEmail } from '../modules/socket';
-import EmailList from '../components/EmailList';
 import EmailView from '../components/EmailView';
 import { Mail, Trash2, RefreshCw, Copy, Inbox, Check } from 'lucide-react';
 import '../styles/email.css';
@@ -29,7 +28,7 @@ const TempEmail = () => {
     const loadMessages = async (addr) => {
         try {
             const res = await emailApi.getMessages(addr);
-            setMessages(res.data.messages);
+            setMessages(res.messages);
         } catch (err) {
             console.error(err);
         }
@@ -39,8 +38,8 @@ const TempEmail = () => {
         setLoading(true);
         try {
             const res = await emailApi.create();
-            setAddress(res.data.address);
-            localStorage.setItem('currentEmail', res.data.address);
+            setAddress(res.address);
+            localStorage.setItem('currentEmail', res.address);
             setMessages([]);
             setSelectedMessage(null);
             setCopied(false);
@@ -86,20 +85,47 @@ const TempEmail = () => {
         setRefreshing(false);
     };
 
+    // Mobile View State
+    const [isMobileView, setIsMobileView] = useState(false);
+    const [showMobileDetail, setShowMobileDetail] = useState(false);
+
+    // Detect Mobile
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobileView(window.innerWidth <= 768);
+        };
+        handleResize(); // Init
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const handleSelectMessage = (msg) => {
+        setSelectedMessage(msg);
+        if (isMobileView) {
+            setShowMobileDetail(true);
+        }
+    };
+
+    const handleBackToInbox = () => {
+        setShowMobileDetail(false);
+        setSelectedMessage(null);
+    };
+
     return (
-        <div className="email-page fade-in">
+        <div className="temp-email fade-in">
             <div className="page-header">
                 <h1 className="page-title">Temp Email</h1>
                 <div className="actions">
-                    {address && (
-                        <button className="btn-secondary" onClick={deleteInbox} style={{ marginRight: '8px' }}>
-                            <Trash2 size={16} />
-                            <span>Delete Inbox</span>
-                        </button>
-                    )}
+                    <button className="btn-secondary" onClick={handleCopy} disabled={!address} style={{ color: copied ? 'var(--success-color)' : 'inherit' }}>
+                        {copied ? <Check size={18} /> : <Copy size={18} />}
+                        <span>{copied ? 'Copied!' : 'Copy'}</span>
+                    </button>
                     <button className="btn-primary" onClick={createEmail} disabled={loading}>
-                        <RefreshCw size={16} className={loading ? 'spin' : ''} />
-                        <span>{loading ? 'Generating...' : address ? 'Regenerate' : 'Generate Email'}</span>
+                        <RefreshCw size={18} className={loading ? 'spin' : ''} />
+                        <span>New Address</span>
+                    </button>
+                    <button className="btn-secondary" onClick={handleRefresh} disabled={refreshing || !address}>
+                        <RefreshCw size={18} className={refreshing ? 'spin' : ''} />
                     </button>
                 </div>
             </div>
@@ -109,7 +135,7 @@ const TempEmail = () => {
                     <div style={{ marginBottom: '24px', color: 'var(--accent-color)' }}>
                         <Mail size={64} strokeWidth={1.5} />
                     </div>
-                    <h2 style={{ marginBottom: '12px' }}>No Active Inbox</h2>
+                    <h2 style={{ marginBottom: '12px' }}>No Active Email</h2>
                     <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
                         Generate a temporary email address to get started.
                     </p>
@@ -119,55 +145,62 @@ const TempEmail = () => {
                     </button>
                 </div>
             ) : (
-                <div className="email-layout">
-                    <div className="email-sidebar">
+                <div className={`email-layout ${isMobileView ? 'mobile' : ''}`}>
+                    {/* Sidebar / List View */}
+                    <div className={`email-sidebar ${isMobileView && showMobileDetail ? 'hidden' : ''}`}>
                         <div className="current-email">
-                            <span className="label">Your Address</span>
-                            <div className="address-box">
-                                <code style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}>{address}</code>
-                                <button
-                                    className="btn-icon"
-                                    onClick={handleCopy}
-                                    title="Copy to clipboard"
-                                    style={{
-                                        color: copied ? 'var(--success-color)' : 'inherit',
-                                    }}
-                                >
-                                    {copied ? <Check size={14} /> : <Copy size={14} />}
-                                </button>
+                            <span className="label">Current Address</span>
+                            <div className="address-box" onClick={handleCopy} style={{ cursor: 'pointer' }}>
+                                <code>{address}</code>
+                                <Copy size={14} style={{ marginLeft: 'auto', opacity: 0.5 }} />
                             </div>
                         </div>
-
-                        <div style={{
-                            padding: '12px 16px',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            borderBottom: '1px solid var(--divider-color)',
-                            background: 'var(--bg-secondary)'
-                        }}>
-                            <span style={{ fontWeight: 600, fontSize: '0.8125rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Inbox</span>
-                            <button
-                                className="btn-icon"
-                                onClick={handleRefresh}
-                                title="Refresh Inbox"
-                                disabled={refreshing}
-                                style={{ opacity: refreshing ? 0.5 : 1 }}
-                            >
-                                <RefreshCw size={14} className={refreshing ? 'spin' : ''} />
-                            </button>
-                        </div>
-
                         <div className="email-list">
-                            <EmailList
-                                messages={messages}
-                                selectedId={selectedMessage?.id}
-                                onSelect={setSelectedMessage}
-                            />
+                            {messages.length === 0 ? (
+                                <div style={{
+                                    padding: '48px 32px',
+                                    textAlign: 'center',
+                                    color: 'var(--text-tertiary)',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    gap: '16px'
+                                }}>
+                                    <div style={{
+                                        color: 'var(--accent-color)',
+                                        opacity: 0.5,
+                                        marginBottom: '8px'
+                                    }}>
+                                        <Inbox size={48} strokeWidth={1.5} />
+                                    </div>
+                                    <div>
+                                        <p style={{ fontSize: '1rem', marginBottom: '8px', color: 'var(--text-secondary)' }}>No messages yet</p>
+                                        <p style={{ fontSize: '0.875rem', margin: 0 }}>Send an email to this address to see it here</p>
+                                    </div>
+                                </div>
+                            ) : (
+                                messages.map((msg) => (
+                                    <div
+                                        key={msg.id}
+                                        className={`email-item ${selectedMessage?.id === msg.id ? 'active' : ''}`}
+                                        onClick={() => handleSelectMessage(msg)}
+                                    >
+                                        <div className="email-sender">
+                                            <span>{msg.from}</span>
+                                            <span className="email-time">{new Date(msg.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                        </div>
+                                        <div className="email-subject">{msg.subject}</div>
+                                    </div>
+                                ))
+                            )}
                         </div>
                     </div>
                     <div className="email-content">
-                        <EmailView message={selectedMessage} />
+                        <EmailView
+                            message={selectedMessage}
+                            onBack={handleBackToInbox}
+                            isMobileView={isMobileView}
+                        />
                     </div>
                 </div>
             )}

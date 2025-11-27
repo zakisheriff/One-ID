@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { settingsApi } from '../modules/api';
 import { Trash2, Save, AlertTriangle, Clock, Shield, Info } from 'lucide-react';
 import '../styles/animations.css';
+import '../styles/settings.css';
 
 const Settings = () => {
     const [ttl, setTtl] = useState({
@@ -56,7 +57,7 @@ const Settings = () => {
                         <input
                             type="text"
                             placeholder="AC..."
-                            style={{ width: '100%' }}
+                            className="glass-input"
                         />
                     </div>
                     <div className="setting-row" style={{ marginBottom: '16px' }}>
@@ -64,7 +65,7 @@ const Settings = () => {
                         <input
                             type="password"
                             placeholder="Token"
-                            style={{ width: '100%' }}
+                            className="glass-input"
                         />
                     </div>
                     <div className="setting-row" style={{ marginBottom: '24px' }}>
@@ -72,7 +73,7 @@ const Settings = () => {
                         <input
                             type="text"
                             placeholder="+1234567890"
-                            style={{ width: '100%' }}
+                            className="glass-input"
                         />
                     </div>
                     <button className="btn-secondary" style={{ width: '100%' }} onClick={() => setStatus('Twilio settings saved (Simulation active until keys verified)')}>
@@ -96,6 +97,7 @@ const Settings = () => {
                             type="number"
                             value={ttl.email}
                             onChange={(e) => updateTtl('email', parseInt(e.target.value))}
+                            className="glass-input"
                             style={{ width: '80px' }}
                         />
                     </div>
@@ -106,6 +108,7 @@ const Settings = () => {
                             type="number"
                             value={ttl.phone}
                             onChange={(e) => updateTtl('phone', parseInt(e.target.value))}
+                            className="glass-input"
                             style={{ width: '80px' }}
                         />
                     </div>
@@ -116,6 +119,7 @@ const Settings = () => {
                             type="number"
                             value={ttl.card}
                             onChange={(e) => updateTtl('card', parseInt(e.target.value))}
+                            className="glass-input"
                             style={{ width: '80px' }}
                         />
                     </div>

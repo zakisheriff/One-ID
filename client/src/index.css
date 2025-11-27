@@ -1,11 +1,30 @@
 @import './styles/variables.css';
 
-/* Base Styles */
+/* Animated Background */
 body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
+    background: linear-gradient(125deg,
+            #0a0b1e 0%,
+            #1a1c3b 25%,
+            #0f1129 50%,
+            #141630 75%,
+            #0a0b1e 100%);
+    background-size: 400% 400%;
+    animation: gradientBG 20s ease infinite;
+    min-height: 100vh;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* Typography */
@@ -15,30 +34,35 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'Google Sans', 'Roboto', sans-serif;
+    font-family: 'Inter', sans-serif;
     color: var(--text-primary);
     margin-bottom: var(--spacing-sm);
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: -0.02em;
 }
 
 h1 {
-    font-size: 2.5rem;
-    letter-spacing: -0.5px;
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(to right, #fff, #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(165, 180, 252, 0.2);
 }
 
 h2 {
-    font-size: 1.75rem;
+    font-size: 2rem;
 }
 
 h3 {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
 }
 
 p {
     color: var(--text-secondary);
     margin-bottom: var(--spacing-md);
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 1.0625rem;
+    line-height: 1.7;
 }
 
 /* Layout Containers */
@@ -48,21 +72,21 @@ p {
     padding: 0 var(--spacing-lg);
 }
 
-/* Scrollbar */
+/* Custom Scrollbar (Dark/Glass) */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: rgba(0, 0, 0, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--divider-color);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--text-tertiary);
+    background: rgba(255, 255, 255, 0.3);
 }

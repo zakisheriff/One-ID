@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import DOMPurify from 'dompurify';
-import { Copy, Check, ExternalLink } from 'lucide-react';
+import { Copy, Check, ExternalLink, ArrowLeft } from 'lucide-react';
 
-const EmailView = ({ message }) => {
+const EmailView = ({ message, onBack, isMobileView }) => {
     const [copiedCode, setCopiedCode] = useState(null);
 
     // Configure DOMPurify to open links in new tab
@@ -14,39 +14,19 @@ const EmailView = ({ message }) => {
     });
 
     const sanitizedBody = useMemo(() => {
-        if (!message) return '';
-        // If body is just text, wrap in pre-wrap div, else sanitize HTML
-        const isHtml = /<[a-z][\s\S]*>/i.test(message.body);
-        if (isHtml) {
-            return DOMPurify.sanitize(message.body);
-        } else {
-            // Convert newlines to <br> for plain text
-            return message.body.replace(/\n/g, '<br>');
-        }
-    }, [message]);
+        if (!message?.body) return '';
+        return DOMPurify.sanitize(message.body, {
+            ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'a', 'div', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'table', 'tr', 'td', 'th', 'img'],
+            ALLOWED_ATTR: ['href', 'target', 'style', 'class', 'src', 'alt', 'width', 'height']
+        });
+    }, [message?.body]);
 
     const detectedCode = useMemo(() => {
-        if (!message) return null;
-        // Try to find a code in the text content (prefer message.text if available, else strip tags)
-        const text = message.text || message.body.replace(/<[^>]*>/g, ' ');
-
-        // Regex for common OTP patterns:
-        // 1. "code is 123456"
-        // 2. "verification code: 1234"
-        // 3. Just a standalone 4-8 digit number surrounded by whitespace
-        const patterns = [
-            /(?:code|pin|otp|verification|password).*?(\d{4,8})/i,
-            /\b(\d{4,8})\b/
-        ];
-
-        for (const pattern of patterns) {
-            const match = text.match(pattern);
-            if (match && match[1]) {
-                return match[1];
-            }
-        }
-        return null;
-    }, [message]);
+        if (!message?.text) return null;
+        const otpPattern = /\b\d{4,8}\b/;
+        const match = message.text.match(otpPattern);
+        return match ? match[0] : null;
+    }, [message?.text]);
 
     const handleCopyCode = (code) => {
         navigator.clipboard.writeText(code);
@@ -56,7 +36,7 @@ const EmailView = ({ message }) => {
 
     if (!message) {
         return (
-            <div className="empty-view">
+            <div className="empty-view" style={{ textAlign: 'center', alignContent: "center", alignItems: "center", justifyContent: "center", display: "flex", flexDirection: "column", height: "100%" }}>
                 <div style={{ fontSize: '3rem', marginBottom: '16px', opacity: 0.5 }}>📨</div>
                 <p>Select a message to read</p>
             </div>
@@ -64,7 +44,29 @@ const EmailView = ({ message }) => {
     }
 
     return (
-        <div className="message-view fade-in" style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: "20px" }}>
+        <div className="message-view fade-in" style={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            padding: "20px",
+            background: isMobileView ? 'rgba(20, 22, 40, 0.6)' : 'transparent',
+            backdropFilter: isMobileView ? 'blur(20px)' : 'none',
+            borderRadius: isMobileView ? 'var(--radius-lg)' : '0',
+            border: isMobileView ? '1px solid rgba(255, 255, 255, 0.1)' : 'none'
+        }}>
+            {isMobileView && onBack && (
+                <button
+                    className="btn-secondary"
+                    onClick={onBack}
+                    style={{
+                        marginBottom: '16px',
+                        width: 'fit-content'
+                    }}
+                >
+                    <ArrowLeft size={18} />
+                    <span>Back to Inbox</span>
+                </button>
+            )}
             <div className="message-header">
                 <h2 style={{ marginBottom: '16px', fontSize: '1.5rem' }}>{message.subject}</h2>
                 <div className="message-meta">
@@ -117,8 +119,9 @@ const EmailView = ({ message }) => {
                     </div>
                 )}
             </div>
+            <br />
 
-            <div className="message-body-container" style={{ flex: 1, overflowY: 'auto', position: 'relative' }}>
+            <div className="message-body-container" style={{ flex: 1, overflowY: 'auto', position: 'relative', borderRadius: '12px' }}>
                 <div
                     className="message-body html-content"
                     dangerouslySetInnerHTML={{ __html: sanitizedBody }}

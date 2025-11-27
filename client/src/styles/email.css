@@ -1,35 +1,41 @@
 /* ============================================
-   EMAIL CSS - GOOGLE FLOW STYLE
+   EMAIL CSS - LIQUID GLASS STYLE
    ============================================ */
 
 .email-layout {
     display: grid;
     grid-template-columns: 320px 1fr;
     gap: var(--spacing-lg);
-    height: calc(100vh - 140px);
+    height: calc(100vh - 160px);
 }
 
+/* Sidebar (Inbox List) */
 .email-sidebar {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
+
+    /* Glass Effect */
+    background: rgba(20, 22, 40, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: var(--radius-lg);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .current-email {
     padding: var(--spacing-lg);
-    border-bottom: 1px solid var(--divider-color);
-    background: var(--bg-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .current-email .label {
     font-size: 0.75rem;
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
     text-transform: uppercase;
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     margin-bottom: 8px;
     display: block;
 }
@@ -37,158 +43,162 @@
 .address-box {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: white;
-    padding: 8px 12px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all var(--transition-fast);
+}
+
+.address-box:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.4);
 }
 
 .address-box code {
-    font-size: 0.875rem;
-    color: var(--text-primary);
+    font-size: 0.9375rem;
+    color: var(--accent-color);
     font-family: 'Roboto Mono', monospace;
-    font-weight: 500;
+    text-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
 }
 
 .email-list {
     flex: 1;
     overflow-y: auto;
-    background: var(--bg-primary);
 }
 
 .email-item {
     padding: 16px 24px;
-    border-bottom: 1px solid var(--divider-color);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     cursor: pointer;
-    transition: background-color var(--transition-fast);
-    position: relative;
+    transition: all var(--transition-fast);
 }
 
 .email-item:hover {
-    background-color: var(--bg-secondary);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .email-item.active {
-    background-color: var(--accent-light);
-}
-
-.email-item.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background-color: var(--accent-color);
+    background: rgba(79, 172, 254, 0.1);
+    border-left: 3px solid var(--accent-color);
 }
 
 .email-sender {
-    font-weight: 500;
-    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-primary);
     margin-bottom: 4px;
     display: flex;
     justify-content: space-between;
-    color: var(--text-primary);
 }
 
 .email-time {
     font-size: 0.75rem;
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
     font-weight: 400;
 }
 
 .email-subject {
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--text-secondary);
 }
 
-.email-item.active .email-sender {
-    color: var(--accent-color);
-}
-
+/* Email Content View */
 .email-content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    /* Glass Effect */
+    background: rgba(20, 22, 40, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.email-header {
+    padding: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.email-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+}
+
+.email-body {
+    flex: 1;
     padding: 32px;
     overflow-y: auto;
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-}
-
-.empty-view {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-tertiary);
-    flex-direction: column;
-    gap: 16px;
-}
-
-.message-header {
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--divider-color);
-}
-
-.message-meta {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 8px 16px;
-    font-size: 0.875rem;
     color: var(--text-secondary);
-}
-
-.meta-label {
-    font-weight: 500;
-    color: var(--text-primary);
-}
-
-.message-body {
     line-height: 1.6;
-    font-size: 1rem;
-    color: var(--text-primary);
 }
 
-/* HTML Content Styles */
-.html-content {
-    color: var(--text-primary);
-}
-
-.html-content a {
+/* HTML Content Styling inside Email */
+.email-body a {
     color: var(--accent-color);
-    text-decoration: none;
-}
-
-.html-content a:hover {
     text-decoration: underline;
 }
 
-.html-content img {
+.email-body img {
     max-width: 100%;
-    height: auto;
-    border-radius: 4px;
+    border-radius: 8px;
 }
 
-.html-content pre {
-    background: var(--bg-secondary);
-    padding: 12px;
-    border-radius: 4px;
-    overflow-x: auto;
-    border: 1px solid var(--border-color);
+/* OTP Box */
+.otp-box {
+    background: rgba(79, 172, 254, 0.1);
+    border: 1px solid rgba(79, 172, 254, 0.3);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    margin-bottom: 24px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(79, 172, 254, 0.1);
+}
+
+.otp-code {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    letter-spacing: 4px;
+    margin: 16px 0;
+    display: block;
+    text-shadow: 0 0 20px rgba(79, 172, 254, 0.4);
 }
 
 @media (max-width: 768px) {
     .email-layout {
         grid-template-columns: 1fr;
+        height: calc(100vh - 200px);
+        /* Adjust for bottom nav */
     }
 
     .email-content {
+        display: none;
+    }
+
+    .email-content {
+        display: flex;
+        /* Override default none */
+    }
+
+    .email-sidebar.hidden,
+    .email-content.hidden {
         display: none;
     }
 }

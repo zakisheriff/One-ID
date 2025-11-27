@@ -1,5 +1,5 @@
 /* ============================================
-   ANIMATIONS CSS - GOOGLE FLOW STYLE
+   ANIMATIONS CSS - LIQUID GLASS STYLE
    ============================================ */
 
 /* Fade In */
@@ -14,24 +14,64 @@
 }
 
 .fade-in {
-    animation: fadeIn 0.4s ease-out forwards;
+    animation: fadeIn 0.8s ease-out forwards;
 }
 
-/* Slide In Up (Subtle) */
+/* Slide In Up (Smooth & Liquid) */
 @keyframes slideInUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(40px) scale(0.95);
+        filter: blur(10px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
+        filter: blur(0);
     }
 }
 
 .slide-in-up {
-    animation: slideInUp 0.5s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+    animation: slideInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Float Animation (Liquid) */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Pulse Glow */
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(79, 172, 254, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(79, 172, 254, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(79, 172, 254, 0);
+    }
+}
+
+.pulse-glow {
+    animation: pulseGlow 2s infinite;
 }
 
 /* Staggered Delays */
@@ -53,18 +93,6 @@
     animation-fill-mode: forwards;
 }
 
-.delay-4 {
-    animation-delay: 0.4s;
-    opacity: 0;
-    animation-fill-mode: forwards;
-}
-
-.delay-5 {
-    animation-delay: 0.5s;
-    opacity: 0;
-    animation-fill-mode: forwards;
-}
-
 /* Spin */
 @keyframes spin {
     from {
@@ -78,23 +106,4 @@
 
 .spin {
     animation: spin 1s linear infinite;
-}
-
-/* Pulse (Subtle) */
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-.pulse {
-    animation: pulse 2s infinite ease-in-out;
 }
