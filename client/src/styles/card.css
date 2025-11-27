@@ -1,0 +1,271 @@
+/* ============================================
+   CARD CSS - LIQUID GLASS
+   ============================================ */
+
+.card-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.card-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    align-items: center;
+}
+
+.card-wrapper {
+    perspective: 1500px;
+    width: 360px;
+    height: 220px;
+    cursor: pointer;
+}
+
+.credit-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    border-radius: 20px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+}
+
+.credit-card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    padding: 28px;
+    color: white;
+    background: linear-gradient(135deg, #2c2c2e 0%, #1c1c1e 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    overflow: hidden;
+}
+
+.card-front::before,
+.card-back::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 50%);
+    pointer-events: none;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    padding: 0;
+}
+
+.card-chip {
+    width: 50px;
+    height: 40px;
+    background: linear-gradient(135deg, #d4af37 0%, #f9e29c 50%, #d4af37 100%);
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card-logo {
+    position: absolute;
+    top: 28px;
+    right: 28px;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.card-number {
+    font-family: 'SF Mono', 'Courier New', monospace;
+    font-size: 1.6rem;
+    letter-spacing: 3px;
+    margin-top: 24px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    font-weight: 500;
+}
+
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+}
+
+.card-meta span {
+    font-size: 0.65rem;
+    opacity: 0.7;
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.magnetic-strip {
+    background: linear-gradient(180deg, #000 0%, #1a1a1a 100%);
+    height: 50px;
+    width: 100%;
+    margin-top: 28px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.cvv-box {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #1c1c1e;
+    width: 80%;
+    margin: 20px auto;
+    padding: 12px 16px;
+    text-align: right;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cvv-label {
+    position: absolute;
+    top: -20px;
+    right: 0;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.cvv-value {
+    font-family: 'SF Mono', monospace;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+}
+
+.card-disclaimer {
+    padding: 20px;
+    font-size: 0.65rem;
+    text-align: center;
+    opacity: 0.5;
+    line-height: 1.4;
+}
+
+.card-controls {
+    width: 100%;
+    max-width: 360px;
+}
+
+.control-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid;
+}
+
+.status-badge.active {
+    background: rgba(52, 199, 89, 0.15);
+    color: #34c759;
+    border-color: rgba(52, 199, 89, 0.3);
+}
+
+.status-badge.locked {
+    background: rgba(255, 59, 48, 0.15);
+    color: #ff3b30;
+    border-color: rgba(255, 59, 48, 0.3);
+}
+
+.control-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.control-actions button {
+    flex: 1;
+}
+
+.transactions-section {
+    height: 100%;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.transaction-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transaction-item:hover {
+    transform: translateX(4px);
+}
+
+.tx-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tx-details {
+    flex: 1;
+}
+
+.tx-merchant {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+}
+
+.tx-date {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+}
+
+.tx-amount {
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+}
+
+@media (max-width: 768px) {
+    .card-layout {
+        grid-template-columns: 1fr;
+    }
+}
