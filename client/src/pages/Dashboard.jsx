@@ -41,7 +41,7 @@ const Dashboard = () => {
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                         filter: 'drop-shadow(0 0 20px rgba(79,172,254,0.4))'
-                    }}>Liquid Web</span>
+                    }}>Crewmate</span>
                 </h1>
                 <p style={{
                     fontSize: 'clamp(1rem, 4vw, 1.35rem)', /* Responsive font size */

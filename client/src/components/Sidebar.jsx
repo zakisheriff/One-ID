@@ -8,7 +8,7 @@ const Sidebar = () => {
         <aside className="sidebar">
             <div className="logo-container">
                 <div className="logo-text">
-                    Imposter <span className="badge">Labs</span>
+                    Imposter <span className="badge"></span>
                 </div>
             </div>
             <nav>
