@@ -1,11 +1,22 @@
 # Imposter - Safe Identity Lab Simulation
 
 Imposter is a self-hosted, safe, educational web application that simulates identity tools:
-- **Temporary Email**: Generate disposable email addresses and receive simulated emails.
+- **Temporary Email**: Generate disposable email addresses and receive real emails via Mail.tm.
 - **Temporary Phone**: Generate fake phone numbers and receive simulated SMS.
 - **Virtual Cards**: Generate valid-format test credit cards and simulate transactions.
 
-> **NOTE**: This is a **simulation only**. No real emails, SMS, or payments are processed. All data is stored in-memory and lost upon server restart.
+> **NOTE**: This is a **simulation/educational tool**. Email uses Mail.tm API for real temporary emails. SMS and card transactions are simulated. All data is stored in-memory and lost upon server restart.
+
+## 🚀 Live Demo
+
+**Frontend:** [https://your-app.vercel.app](https://your-app.vercel.app)  
+**Backend:** [https://imposter-backend.onrender.com](https://imposter-backend.onrender.com)
+
+> Replace with your actual deployment URLs after deploying
+
+## 📦 Deployment
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment instructions to Vercel (frontend) and Render (backend).
 
 ## Project Structure
 
