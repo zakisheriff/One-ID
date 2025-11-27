@@ -116,6 +116,38 @@ Railway will automatically redeploy when you add the variable.
 
 ## Troubleshooting
 
+### Railway: "No start command was found"
+
+**Problem:** Railway can't find how to start your application
+
+**Solution (Choose ONE method):**
+
+**Method 1: Use Configuration Files (Recommended)**
+The repository now includes `railway.json` and `nixpacks.toml` configuration files. Railway should automatically detect these. If deployment still fails:
+
+1. Delete the failed deployment in Railway
+2. Create a new deployment
+3. Railway will pick up the configuration files
+
+**Method 2: Configure Root Directory in Railway Dashboard**
+1. Go to your Railway project
+2. Click on Settings
+3. Under "Build & Deploy" section, set:
+   - **Root Directory:** `server`
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+4. Click "Deploy" to redeploy
+
+**Method 3: Use Root Package.json**
+The root `package.json` now has a `start` script. Railway should detect this automatically. If not:
+1. In Railway Settings, ensure Root Directory is empty (or set to `.`)
+2. Build Command: `cd server && npm install`
+3. Start Command: `npm start`
+
+**Verification:**
+- Check Railway logs for "Server running on port..."
+- Your backend should be accessible at the Railway-generated URL
+
 ### Frontend can't connect to backend
 
 **Problem:** CORS errors in browser console
