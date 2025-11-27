@@ -10,13 +10,13 @@ Imposter is a self-hosted, safe, educational web application that simulates iden
 ## 🚀 Live Demo
 
 **Frontend:** [https://your-app.vercel.app](https://your-app.vercel.app)  
-**Backend:** [https://imposter-backend.onrender.com](https://imposter-backend.onrender.com)
+**Backend:** [https://your-app.up.railway.app](https://your-app.up.railway.app)
 
 > Replace with your actual deployment URLs after deploying
 
 ## 📦 Deployment
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment instructions to Vercel (frontend) and Render (backend).
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment instructions to Vercel (frontend) and Railway (backend).
 
 ## Project Structure
 
