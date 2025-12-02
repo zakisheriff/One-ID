@@ -1,5 +1,5 @@
 /* ============================================
-   PHONE CSS - LIQUID GLASS STYLE
+   PHONE CSS - DARK GLASS THEME
    ============================================ */
 
 .phone-layout {
@@ -15,22 +15,22 @@
     overflow: hidden;
 
     /* Glass Effect */
-    background: rgba(20, 22, 40, 0.4);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
 }
 
 .current-number {
     padding: var(--spacing-lg);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--glass-border);
     background: rgba(255, 255, 255, 0.02);
 }
 
 .current-number .label {
     font-size: 0.75rem;
-    color: var(--text-tertiary);
+    color: var(--text-muted);
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 1px;
@@ -45,15 +45,20 @@
     background: rgba(0, 0, 0, 0.3);
     padding: 10px 14px;
     border-radius: var(--radius-md);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    transition: border-color var(--transition-fast);
+}
+
+.number-display:hover {
+    border-color: var(--accent-primary-start);
 }
 
 .number-display code {
     font-size: 1.1rem;
-    color: var(--warning-color);
+    color: var(--accent-primary-start);
     font-family: 'Roboto Mono', monospace;
     font-weight: 500;
-    text-shadow: 0 0 10px rgba(255, 234, 0, 0.3);
+    text-shadow: 0 0 10px rgba(75, 144, 255, 0.3);
 }
 
 .message-list {
@@ -67,18 +72,18 @@
     flex-direction: column;
 
     /* Glass Effect */
-    background: rgba(20, 22, 40, 0.4);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--glass-shadow);
 }
 
 .chat-header {
     padding: 16px 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--glass-border);
     background: rgba(255, 255, 255, 0.02);
     display: flex;
     align-items: center;
@@ -88,13 +93,13 @@
 .chat-avatar {
     width: 40px;
     height: 40px;
-    background: rgba(255, 234, 0, 0.1);
-    color: var(--warning-color);
+    background: rgba(75, 144, 255, 0.1);
+    color: var(--accent-primary-start);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 15px rgba(255, 234, 0, 0.2);
+    box-shadow: 0 0 15px rgba(75, 144, 255, 0.2);
 }
 
 .chat-info h3 {
@@ -132,7 +137,7 @@
     background: rgba(255, 255, 255, 0.08);
     color: var(--text-primary);
     border-bottom-left-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
 }
 
 .chat-bubble.sent {
@@ -140,7 +145,7 @@
     background: var(--accent-gradient);
     color: #000;
     border-bottom-right-radius: 4px;
-    box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
+    box-shadow: 0 0 15px rgba(71, 70, 255, 0.3);
     font-weight: 500;
 }
 
@@ -154,7 +159,7 @@
 
 .chat-footer {
     padding: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid var(--glass-border);
     background: rgba(255, 255, 255, 0.02);
 }
 
@@ -164,7 +169,7 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    color: var(--text-tertiary);
+    color: var(--text-muted);
     text-align: center;
     padding: 32px;
 }

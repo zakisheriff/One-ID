@@ -76,7 +76,7 @@ const Settings = () => {
                             className="glass-input"
                         />
                     </div>
-                    <button className="btn-secondary" style={{ width: '100%' }} onClick={() => setStatus('Twilio settings saved (Simulation active until keys verified)')}>
+                    <button className="btn-primary" style={{ width: '100%' }} onClick={() => setStatus('Twilio settings saved (Simulation active until keys verified)')}>
                         <Save size={16} />
                         <span>Save Twilio Settings</span>
                     </button>
@@ -128,12 +128,12 @@ const Settings = () => {
                 <div style={{ marginBottom: '32px', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '32px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px', color: '#ef4444' }}>
                         <AlertTriangle size={20} />
-                        <h3 style={{ margin: 0, color: '#ef4444' }}>Danger Zone</h3>
+                        <h3 style={{ margin: 0, color: 'var(--accent-error)' }}>Danger Zone</h3>
                     </div>
                     <p style={{ color: 'var(--text-secondary)', marginBottom: '24px', fontSize: '0.9rem' }}>
                         Irreversible actions.
                     </p>
-                    <button className="btn-primary" onClick={handleClear} style={{ background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)', boxShadow: '0 4px 15px rgba(239, 68, 68, 0.3)', width: '100%', border: 'none' }}>
+                    <button className="btn-danger" onClick={handleClear} style={{ width: '100%' }}>
                         <Trash2 size={16} />
                         <span>Clear All Data</span>
                     </button>

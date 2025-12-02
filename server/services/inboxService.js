@@ -119,6 +119,10 @@ class InboxService {
             inbox.messages = inbox.messages.filter(m => m.id !== messageId);
         }
     }
+
+    clearAll() {
+        this.inboxes.clear();
+    }
 }
 
 module.exports = new InboxService();

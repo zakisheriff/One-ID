@@ -54,11 +54,18 @@ app.get('/', (req, res) => {
 // --- Simulation Logic ---
 
 const FAKE_DATA = {
-    senders: ['Amazon', 'Netflix', 'Google', 'Apple', 'LinkedIn', 'Slack', 'Zoom'],
+    senders: ['PickMe', 'Uber', 'Daraz', 'Dialog', 'Mobitel', 'Sampath Bank', 'Commercial Bank', 'FoodCity', 'Keells'],
     subjects: ['Your order has shipped', 'Verify your email', 'Security Alert', 'New Login', 'Subscription Update'],
     bodies: ['Please click here to verify.', 'Your code is 123456.', 'Someone logged in from new device.', 'Your payment failed.'],
-    smsBodies: ['Your verification code is 84920.', 'Your delivery is arriving soon.', 'Appointment confirmed for tomorrow.'],
-    merchants: ['Uber', 'Starbucks', 'Amazon AWS', 'Target', 'Whole Foods', 'Steam'],
+    smsBodies: [
+        'Your PickMe verification code is 84920.',
+        'Your Daraz package is out for delivery.',
+        'Sampath Bank: Rs. 5,000 debited from card ending 1234.',
+        'Dialog: You have used 80% of your data bundle.',
+        'Your Uber code is 4432.',
+        'Keells: Your order #4492 is ready for pickup.'
+    ],
+    merchants: ['PickMe', 'Uber Eats', 'Daraz', 'FoodCity', 'Keells Super', 'Odel', 'Kapruka', 'Dialog Axiata', 'SLT Mobitel'],
 };
 
 function getRandom(arr) {

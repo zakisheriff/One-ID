@@ -131,13 +131,14 @@ const TempEmail = () => {
             </div>
 
             {!address ? (
-                <div className="empty-state card" style={{ textAlign: 'center', padding: '48px', maxWidth: '600px', margin: '40px auto' }}>
-                    <div style={{ marginBottom: '24px', color: 'var(--accent-color)' }}>
-                        <Mail size={64} strokeWidth={1.5} />
+                <div className="empty-guide">
+                    <div className="empty-guide-icon">
+                        <Mail size={40} strokeWidth={1.5} />
                     </div>
-                    <h2 style={{ marginBottom: '12px' }}>No Active Email</h2>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                        Generate a temporary email address to get started.
+                    <h2>No Active Email</h2>
+                    <p>
+                        Generate a new temporary email address to receive messages.
+                        This guide will disappear once you generate an email.
                     </p>
                     <button className="btn-primary" onClick={createEmail}>
                         <RefreshCw size={16} />

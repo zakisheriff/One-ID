@@ -197,20 +197,7 @@ const Dashboard = () => {
                 </Link>
             </div>
 
-            {/* Recent Activity Section */}
-            <div className="container" style={{ maxWidth: '1000px', margin: '0 auto', padding: 0 }}>
-                <h3 style={{ marginBottom: '20px', fontSize: '1.1rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Recent Activity</h3>
-                <div className="glass-panel" style={{ padding: '40px 20px', textAlign: 'center', border: '1px solid var(--glass-border)' }}>
-                    <Activity
-                        size={40}
-                        color="var(--text-tertiary)"
-                        style={{ marginBottom: '20px', display: 'block', margin: '0 auto 20px auto', opacity: 0.5 }}
-                    />
-                    <p style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>
-                        No recent activity to show.
-                    </p>
-                </div>
-            </div>
+            
         </div>
     );
 };

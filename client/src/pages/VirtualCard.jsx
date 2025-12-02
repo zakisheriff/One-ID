@@ -74,13 +74,14 @@ const VirtualCard = () => {
             </div>
 
             {!card ? (
-                <div className="empty-state card" style={{ textAlign: 'center', padding: '48px', maxWidth: '600px', margin: '40px auto' }}>
-                    <div style={{ marginBottom: '24px', color: 'var(--accent-color)' }}>
-                        <CreditCard size={64} strokeWidth={1.5} />
+                <div className="empty-guide">
+                    <div className="empty-guide-icon">
+                        <CreditCard size={40} strokeWidth={1.5} />
                     </div>
-                    <h2 style={{ marginBottom: '12px' }}>No Active Card</h2>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                        Generate a virtual card to simulate transactions.
+                    <h2>No Active Card</h2>
+                    <p>
+                        Generate a new virtual card to start simulating transactions.
+                        This guide will disappear once you generate a card.
                     </p>
                     <button className="btn-primary" onClick={createCard}>
                         <RefreshCw size={16} />
@@ -132,7 +133,7 @@ const VirtualCard = () => {
                                                     <span className="transaction-date">{new Date(tx.date).toLocaleTimeString()}</span>
                                                 </div>
                                             </div>
-                                            <span className="transaction-amount">-${tx.amount}</span>
+                                            <span className="transaction-amount">-LKR {tx.amount}</span>
                                         </div>
                                     ))}
                                 </div>

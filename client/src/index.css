@@ -1,30 +1,11 @@
 @import './styles/variables.css';
 
-/* Animated Background */
+/* Global Background */
 body {
-    background: linear-gradient(125deg,
-            #0a0b1e 0%,
-            #1a1c3b 25%,
-            #0f1129 50%,
-            #141630 75%,
-            #0a0b1e 100%);
-    background-size: 400% 400%;
-    animation: gradientBG 20s ease infinite;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
     min-height: 100vh;
-}
-
-@keyframes gradientBG {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
+    font-family: var(--font-main);
 }
 
 /* Typography */
@@ -34,20 +15,15 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-display);
     color: var(--text-primary);
     margin-bottom: var(--spacing-sm);
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: -0.02em;
 }
 
 h1 {
     font-size: 3.5rem;
-    font-weight: 700;
-    background: linear-gradient(to right, #fff, #a5b4fc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 30px rgba(165, 180, 252, 0.2);
 }
 
 h2 {

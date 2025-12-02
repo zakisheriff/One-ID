@@ -120,7 +120,7 @@ const TempPhone = () => {
                 <h1 className="page-title">Temp Phone</h1>
                 <div className="actions">
                     {number && (
-                        <button className="btn-secondary" onClick={deleteNumber} style={{ marginRight: '8px' }}>
+                        <button className="btn-danger" onClick={deleteNumber} style={{ marginRight: '8px' }}>
                             <Trash2 size={16} />
                             <span>Delete Number</span>
                         </button>
@@ -133,13 +133,14 @@ const TempPhone = () => {
             </div>
 
             {!number ? (
-                <div className="empty-state card" style={{ textAlign: 'center', padding: '48px', maxWidth: '600px', margin: '40px auto' }}>
-                    <div style={{ marginBottom: '24px', color: 'var(--warning-color)' }}>
-                        <Phone size={64} strokeWidth={1.5} />
+                <div className="empty-guide">
+                    <div className="empty-guide-icon">
+                        <Phone size={40} strokeWidth={1.5} />
                     </div>
-                    <h2 style={{ marginBottom: '12px' }}>No Active Number</h2>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                        Generate a temporary phone number to receive SMS.
+                    <h2>No Active Number</h2>
+                    <p>
+                        Generate a new temporary phone number to receive SMS verification codes.
+                        This guide will disappear once you generate a number.
                     </p>
                     <button className="btn-primary" onClick={createNumber}>
                         <RefreshCw size={16} />

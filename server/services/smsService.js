@@ -36,8 +36,9 @@ class SmsService {
             this.createInbox(number);
             return number;
         } else {
-            // Simulation
-            const number = `+1${Math.floor(Math.random() * 9000000000) + 1000000000}`;
+            // Simulation (Sri Lanka)
+            // +94 7X XXX XXXX
+            const number = `+947${Math.floor(Math.random() * 100000000).toString().padStart(8, '0')}`;
             this.createInbox(number);
             return number;
         }

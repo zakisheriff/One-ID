@@ -1,5 +1,5 @@
 /* ============================================
-   CARD CSS - LIQUID GLASS STYLE
+   CARD CSS - DARK GLASS THEME
    ============================================ */
 
 .card-page {
@@ -75,6 +75,7 @@
     margin: 32px 0;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     background: linear-gradient(to bottom, #fff, #ccc);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -103,10 +104,10 @@
 
 /* Card Controls */
 .card-controls {
-    background: rgba(20, 22, 40, 0.4);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
     padding: 24px;
 }
@@ -114,7 +115,7 @@
 .control-header {
     margin-bottom: 24px;
     padding-bottom: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--glass-border);
 }
 
 .control-header h3 {
@@ -134,7 +135,7 @@
     justify-content: space-between;
     padding: 16px;
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
     margin-bottom: 12px;
     border-radius: var(--radius-md);
     transition: all var(--transition-fast);
@@ -170,7 +171,7 @@
 
 .transaction-date {
     font-size: 0.75rem;
-    color: var(--text-tertiary);
+    color: var(--text-muted);
 }
 
 .transaction-amount {
