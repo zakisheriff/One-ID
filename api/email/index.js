@@ -15,6 +15,25 @@ module.exports = async (req, res) => {
     const { action, address } = req.query;
 
     try {
+        // Check environment variables
+        const hasSupabaseUrl = !!process.env.SUPABASE_URL;
+        const hasSupabaseKey = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+        if (!hasSupabaseUrl || !hasSupabaseKey) {
+            console.error('[Email API] Missing environment variables:', {
+                SUPABASE_URL: hasSupabaseUrl,
+                SUPABASE_SERVICE_ROLE_KEY: hasSupabaseKey
+            });
+            return res.status(500).json({
+                error: 'Server configuration error',
+                details: 'Missing Supabase environment variables',
+                envStatus: {
+                    url: hasSupabaseUrl,
+                    key: hasSupabaseKey
+                }
+            });
+        }
+
         switch (action) {
             case 'new':
                 // POST /api/email?action=new
@@ -62,6 +81,15 @@ module.exports = async (req, res) => {
         }
     } catch (error) {
         console.error('[Email API Error]:', error);
-        return res.status(500).json({ error: error.message || 'Internal server error' });
+        return res.status(500).json({
+            error: error.message || 'Internal server error',
+            technicalDetails: error.toString(),
+            upstreamError: error.response?.data || null,
+            details: 'Check Vercel Function Logs for more info',
+            envStatus: {
+                url: !!process.env.SUPABASE_URL,
+                key: !!process.env.SUPABASE_SERVICE_ROLE_KEY
+            }
+        });
     }
 };
