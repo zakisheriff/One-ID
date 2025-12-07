@@ -1,33 +1,52 @@
-// Email service with 1secmail + Supabase integration
+// Email service with mail.gw + Supabase integration
 const axios = require('axios');
 const { getSupabaseClient } = require('./supabase');
 
 class InboxService {
     constructor() {
-        this.baseUrl = 'https://www.1secmail.com/api/v1/';
+        this.baseUrl = 'https://api.mail.gw';
         this.ttl = 10 * 60 * 1000; // 10 minutes default
-        this.domains = ['1secmail.com', '1secmail.org', '1secmail.net'];
     }
 
     async generateAddress() {
         const supabase = getSupabaseClient();
 
-        // Generate random username
-        const username = Math.random().toString(36).substring(2, 12);
-        const domain = this.domains[Math.floor(Math.random() * this.domains.length)];
-        const address = `${username}@${domain}`;
-
         try {
-            console.log(`[1secmail] Creating email address: ${address}`);
+            console.log(`[mail.gw] Generating new email address...`);
 
-            // 1secmail doesn't require account creation - just use the address
+            // Get available domain
+            const domainResponse = await axios.get(`${this.baseUrl}/domains`);
+            const domains = domainResponse.data['hydra:member'];
+            if (!domains || domains.length === 0) {
+                throw new Error('No domains available');
+            }
+            const domain = domains[0].domain;
+            console.log(`[mail.gw] Using domain: ${domain}`);
+
+            // Generate random username
+            const username = Math.random().toString(36).substring(2, 12);
+            const password = Math.random().toString(36).substring(2, 15);
+            const address = `${username}@${domain}`;
+
+            // Create account
+            const accountResponse = await axios.post(`${this.baseUrl}/accounts`, {
+                address: address,
+                password: password
+            });
+
+            // Get JWT token
+            const tokenResponse = await axios.post(`${this.baseUrl}/token`, {
+                address: address,
+                password: password
+            });
+
             // Store in Supabase
             const { data, error } = await supabase
                 .from('email_addresses')
                 .insert([{
                     address: address,
-                    mail_tm_id: null,
-                    mail_tm_token: null,
+                    mail_tm_id: accountResponse.data.id,
+                    mail_tm_token: tokenResponse.data.token,
                     expires_at: new Date(Date.now() + this.ttl).toISOString()
                 }])
                 .select()
@@ -41,7 +60,8 @@ class InboxService {
             console.log(`[Success] Email created: ${address}`);
             return { address, expiresAt: data.expires_at };
         } catch (error) {
-            console.error('[1secmail] Failed to create address:', error.message);
+            console.error('[mail.gw] Failed to create address:', error.message);
+            console.error('[mail.gw] Error response:', error.response?.data);
             throw new Error(`Failed to generate email address: ${error.message}`);
         }
     }
@@ -50,27 +70,37 @@ class InboxService {
         const supabase = getSupabaseClient();
 
         try {
-            // Parse email address
-            const [username, domain] = address.split('@');
+            console.log(`[mail.gw] Syncing messages for: ${address}`);
 
-            console.log(`[1secmail] Syncing messages for: ${address}`);
-            console.log(`[1secmail] Username: ${username}, Domain: ${domain}`);
+            // Get email record from Supabase
+            const { data: emailData, error: emailError } = await supabase
+                .from('email_addresses')
+                .select('mail_tm_token, mail_tm_id')
+                .eq('address', address)
+                .eq('deleted', false)
+                .single();
 
-            // Fetch messages from 1secmail
-            console.log(`[1secmail] Fetching messages from API...`);
-            const response = await axios.get(this.baseUrl, {
-                params: {
-                    action: 'getMessages',
-                    login: username,
-                    domain: domain
-                }
+            if (emailError || !emailData) {
+                console.error('[Supabase] Email not found:', emailError);
+                throw new Error('Email address not found');
+            }
+
+            if (!emailData.mail_tm_token) {
+                console.log('[mail.gw] No token available, skipping sync');
+                return { synced: 0 };
+            }
+
+            // Fetch messages from mail.gw
+            console.log(`[mail.gw] Fetching messages from API...`);
+            const response = await axios.get(`${this.baseUrl}/messages`, {
+                headers: { Authorization: `Bearer ${emailData.mail_tm_token}` }
             });
 
-            const remoteMessages = response.data || [];
-            console.log(`[1secmail] Found ${remoteMessages.length} messages`);
+            const remoteMessages = response.data['hydra:member'] || [];
+            console.log(`[mail.gw] Found ${remoteMessages.length} messages`);
 
             if (remoteMessages.length === 0) {
-                console.log(`[1secmail] No messages to sync`);
+                console.log(`[mail.gw] No messages to sync`);
                 return { synced: 0 };
             }
 
@@ -86,40 +116,31 @@ class InboxService {
                 throw selectError;
             }
 
-            const existingIds = new Set(existingMessages?.map(m => m.remote_id?.toString()) || []);
+            const existingIds = new Set(existingMessages?.map(m => m.remote_id) || []);
             console.log(`[Supabase] Found ${existingIds.size} existing messages`);
 
             // Process new messages
             const newMessages = [];
             for (const msg of remoteMessages) {
-                if (!existingIds.has(msg.id.toString())) {
-                    console.log(`[1secmail] Fetching full message ${msg.id}...`);
+                if (!existingIds.has(msg.id)) {
+                    console.log(`[mail.gw] Fetching full message ${msg.id}...`);
 
                     // Fetch full message details
-                    const fullMsgResponse = await axios.get(this.baseUrl, {
-                        params: {
-                            action: 'readMessage',
-                            login: username,
-                            domain: domain,
-                            id: msg.id
-                        }
+                    const fullMsgResponse = await axios.get(`${this.baseUrl}/messages/${msg.id}`, {
+                        headers: { Authorization: `Bearer ${emailData.mail_tm_token}` }
                     });
 
                     const fullMsg = fullMsgResponse.data;
-                    console.log(`[1secmail] Got full message:`, {
-                        from: fullMsg.from,
-                        subject: fullMsg.subject,
-                        date: msg.date
-                    });
+                    console.log(`[mail.gw] Got full message from:`, fullMsg.from.address);
 
                     newMessages.push({
                         address: address,
-                        remote_id: msg.id.toString(),
-                        from_address: fullMsg.from || msg.from || 'Unknown',
-                        subject: fullMsg.subject || msg.subject || '(No subject)',
-                        body: fullMsg.htmlBody || fullMsg.textBody || fullMsg.body || 'No content',
-                        text_body: fullMsg.textBody || fullMsg.body,
-                        timestamp: new Date(msg.date).toISOString()
+                        remote_id: msg.id,
+                        from_address: `${fullMsg.from.name || ''} <${fullMsg.from.address}>`,
+                        subject: fullMsg.subject || '(No subject)',
+                        body: fullMsg.html || fullMsg.text || 'No content',
+                        text_body: fullMsg.text,
+                        timestamp: fullMsg.createdAt
                     });
                 }
             }
@@ -133,25 +154,18 @@ class InboxService {
 
                 if (insertError) {
                     console.error('[Supabase] Failed to insert messages:', insertError);
-                    console.error('[Supabase] Insert error details:', JSON.stringify(insertError, null, 2));
                     throw insertError;
                 }
 
-                console.log(`[1secmail] Successfully synced ${newMessages.length} new messages for ${address}`);
+                console.log(`[mail.gw] Successfully synced ${newMessages.length} new messages`);
             } else {
-                console.log(`[1secmail] No new messages to insert`);
+                console.log(`[mail.gw] No new messages to insert`);
             }
 
             return { synced: newMessages.length };
         } catch (error) {
-            console.error(`[1secmail] Failed to sync messages for ${address}:`, error.message);
-            console.error(`[1secmail] Error stack:`, error.stack);
-            console.error(`[1secmail] Error details:`, {
-                name: error.name,
-                message: error.message,
-                code: error.code,
-                response: error.response?.data
-            });
+            console.error(`[mail.gw] Failed to sync messages:`, error.message);
+            console.error(`[mail.gw] Error details:`, error.response?.data);
             throw error;
         }
     }
