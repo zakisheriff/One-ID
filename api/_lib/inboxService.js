@@ -54,8 +54,10 @@ class InboxService {
             const [username, domain] = address.split('@');
 
             console.log(`[1secmail] Syncing messages for: ${address}`);
+            console.log(`[1secmail] Username: ${username}, Domain: ${domain}`);
 
             // Fetch messages from 1secmail
+            console.log(`[1secmail] Fetching messages from API...`);
             const response = await axios.get(this.baseUrl, {
                 params: {
                     action: 'getMessages',
@@ -67,18 +69,32 @@ class InboxService {
             const remoteMessages = response.data || [];
             console.log(`[1secmail] Found ${remoteMessages.length} messages`);
 
+            if (remoteMessages.length === 0) {
+                console.log(`[1secmail] No messages to sync`);
+                return { synced: 0 };
+            }
+
             // Get existing message IDs from Supabase
-            const { data: existingMessages } = await supabase
+            console.log(`[Supabase] Checking for existing messages...`);
+            const { data: existingMessages, error: selectError } = await supabase
                 .from('email_messages')
                 .select('remote_id')
                 .eq('address', address);
 
+            if (selectError) {
+                console.error('[Supabase] Error fetching existing messages:', selectError);
+                throw selectError;
+            }
+
             const existingIds = new Set(existingMessages?.map(m => m.remote_id?.toString()) || []);
+            console.log(`[Supabase] Found ${existingIds.size} existing messages`);
 
             // Process new messages
             const newMessages = [];
             for (const msg of remoteMessages) {
                 if (!existingIds.has(msg.id.toString())) {
+                    console.log(`[1secmail] Fetching full message ${msg.id}...`);
+
                     // Fetch full message details
                     const fullMsgResponse = await axios.get(this.baseUrl, {
                         params: {
@@ -90,6 +106,11 @@ class InboxService {
                     });
 
                     const fullMsg = fullMsgResponse.data;
+                    console.log(`[1secmail] Got full message:`, {
+                        from: fullMsg.from,
+                        subject: fullMsg.subject,
+                        date: msg.date
+                    });
 
                     newMessages.push({
                         address: address,
@@ -105,20 +126,32 @@ class InboxService {
 
             // Insert new messages into Supabase
             if (newMessages.length > 0) {
+                console.log(`[Supabase] Inserting ${newMessages.length} new messages...`);
                 const { error: insertError } = await supabase
                     .from('email_messages')
                     .insert(newMessages);
 
                 if (insertError) {
                     console.error('[Supabase] Failed to insert messages:', insertError);
+                    console.error('[Supabase] Insert error details:', JSON.stringify(insertError, null, 2));
+                    throw insertError;
                 }
 
-                console.log(`[1secmail] Synced ${newMessages.length} new messages for ${address}`);
+                console.log(`[1secmail] Successfully synced ${newMessages.length} new messages for ${address}`);
+            } else {
+                console.log(`[1secmail] No new messages to insert`);
             }
 
             return { synced: newMessages.length };
         } catch (error) {
             console.error(`[1secmail] Failed to sync messages for ${address}:`, error.message);
+            console.error(`[1secmail] Error stack:`, error.stack);
+            console.error(`[1secmail] Error details:`, {
+                name: error.name,
+                message: error.message,
+                code: error.code,
+                response: error.response?.data
+            });
             throw error;
         }
     }
