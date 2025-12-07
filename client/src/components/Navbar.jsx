@@ -13,16 +13,6 @@ const Navbar = () => {
                 <div className="navbar-left">
                     <NavLink to="/" className="navbar-logo">
                         <span className="navbar-logo-text">One ID</span>
-                        <span className="badge text-gradient" style={{
-                            background: 'none',
-                            WebkitTextFillColor: 'initial',
-                            color: 'transparent',
-                            backgroundClip: 'text',
-                            WebkitBackgroundClip: 'text',
-                            backgroundImage: 'var(--accent-gradient)',
-                            fontSize: '10px',
-                            marginLeft: '4px'
-                        }}>BETA</span>
                     </NavLink>
                 </div>
 

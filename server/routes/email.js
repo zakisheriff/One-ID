@@ -3,41 +3,69 @@ const router = express.Router();
 const inboxService = require('../services/inboxService');
 const socketService = require('../services/socketService');
 
-// POST /api/email/new
-router.post('/new', async (req, res) => {
+// All routes use query parameters to match client API and Vercel functions
+// GET /api/email?action=messages&address=...
+// POST /api/email?action=new
+// POST /api/email?action=sync&address=...
+// DELETE /api/email?action=delete&address=...
+
+router.all('/', async (req, res) => {
+    const { action, address } = req.query;
+
     try {
-        const address = await inboxService.generateAddress();
-        res.json({ address, expiresAt: new Date(Date.now() + inboxService.ttl) });
+        switch (action) {
+            case 'new':
+                // POST /api/email?action=new
+                if (req.method !== 'POST') {
+                    return res.status(405).json({ error: 'Method not allowed' });
+                }
+                const address = await inboxService.generateAddress();
+                return res.status(200).json({ address });
+
+            case 'sync':
+                // POST /api/email?action=sync&address=...
+                if (req.method !== 'POST') {
+                    return res.status(405).json({ error: 'Method not allowed' });
+                }
+                if (!address) {
+                    return res.status(400).json({ error: 'Address required' });
+                }
+                const syncResult = await inboxService.syncMessages(address);
+                return res.status(200).json(syncResult);
+
+            case 'messages':
+                // GET /api/email?action=messages&address=...
+                if (req.method !== 'GET') {
+                    return res.status(405).json({ error: 'Method not allowed' });
+                }
+                if (!address) {
+                    return res.status(400).json({ error: 'Address required' });
+                }
+                const messages = await inboxService.getMessages(address);
+                return res.status(200).json({ messages });
+
+            case 'delete':
+                // DELETE /api/email?action=delete&address=...
+                if (req.method !== 'DELETE') {
+                    return res.status(405).json({ error: 'Method not allowed' });
+                }
+                if (!address) {
+                    return res.status(400).json({ error: 'Address required' });
+                }
+                await inboxService.deleteAddress(address);
+                return res.status(200).json({ success: true });
+
+            default:
+                return res.status(400).json({ error: 'Invalid action' });
+        }
     } catch (error) {
-        res.status(500).json({ error: 'Failed to generate email address' });
+        console.error('[Email Route Error]:', error);
+        return res.status(500).json({
+            error: error.message || 'Internal server error',
+            details: error.toString()
+        });
     }
-});
-
-// GET /api/email/:address
-router.get('/:address', (req, res) => {
-    const messages = inboxService.getMessages(req.params.address);
-    res.json({ messages });
-});
-
-// GET /api/email/:address/:id
-router.get('/:address/:id', (req, res) => {
-    const message = inboxService.getMessage(req.params.address, req.params.id);
-    if (message) {
-        res.json(message);
-    } else {
-        res.status(404).json({ error: 'Message not found' });
-    }
-});
-
-// DELETE /api/email/:address
-router.delete('/:address', (req, res) => {
-    inboxService.clearInbox(req.params.address);
-    res.json({ success: true });
-});
-
-// GET /api/email/domains
-router.get('/domains', (req, res) => {
-    res.json({ domains: [inboxService.domain] });
 });
 
 module.exports = router;
+

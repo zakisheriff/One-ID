@@ -4,33 +4,35 @@ const inboxService = require('../services/inboxService');
 const smsService = require('../services/smsService');
 const cardService = require('../services/cardService');
 
-// POST /api/settings/clear
-router.post('/clear', (req, res) => {
-    inboxService.clearAll();
-    smsService.clearAll();
-    cardService.clearAll();
-    res.json({ success: true, message: 'All simulation data cleared' });
-});
+// All routes use query parameters to match client API and Vercel functions
+// POST /api/settings?action=clear
 
-// POST /api/settings/ttl
-router.post('/ttl', (req, res) => {
-    const { service, ttl } = req.body; // ttl in ms
-    if (!ttl || ttl < 1000) return res.status(400).json({ error: 'Invalid TTL' });
+router.all('/', (req, res) => {
+    const { action } = req.query;
 
-    switch (service) {
-        case 'email':
-            inboxService.setTTL(ttl);
-            break;
-        case 'phone':
-            smsService.setTTL(ttl);
-            break;
-        case 'card':
-            cardService.setTTL(ttl);
-            break;
-        default:
-            return res.status(400).json({ error: 'Invalid service' });
+    try {
+        switch (action) {
+            case 'clear':
+                // POST /api/settings?action=clear
+                if (req.method !== 'POST') {
+                    return res.status(405).json({ error: 'Method not allowed' });
+                }
+                inboxService.clearAll();
+                smsService.clearAll();
+                cardService.clearAll();
+                return res.status(200).json({ success: true, message: 'All simulation data cleared' });
+
+            default:
+                return res.status(400).json({ error: 'Invalid action' });
+        }
+    } catch (error) {
+        console.error('[Settings Route Error]:', error);
+        return res.status(500).json({
+            error: error.message || 'Internal server error',
+            details: error.toString()
+        });
     }
-    res.json({ success: true, service, ttl });
 });
 
 module.exports = router;
+

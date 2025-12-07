@@ -3,42 +3,75 @@ const router = express.Router();
 const smsService = require('../services/smsService');
 const socketService = require('../services/socketService');
 
-// POST /api/phone/new
-router.post('/new', async (req, res) => {
+// All routes use query parameters to match client API and Vercel functions
+// POST /api/phone?action=new
+// GET /api/phone?action=messages&number=...
+// DELETE /api/phone?action=delete&number=...
+// POST /api/phone?action=simulate&number=...
+
+router.all('/', async (req, res) => {
+    const { action, number } = req.query;
+
     try {
-        const number = await smsService.generateNumber();
-        res.json({ number, expiresAt: new Date(Date.now() + smsService.ttl) });
+        switch (action) {
+            case 'new':
+                // POST /api/phone?action=new
+                if (req.method !== 'POST') {
+                    return res.status(405).json({ error: 'Method not allowed' });
+                }
+                const number = await smsService.generateNumber();
+                return res.status(200).json({ number });
+
+            case 'messages':
+                // GET /api/phone?action=messages&number=...
+                if (req.method !== 'GET') {
+                    return res.status(405).json({ error: 'Method not allowed' });
+                }
+                if (!number) {
+                    return res.status(400).json({ error: 'Number required' });
+                }
+                const messages = await smsService.getMessages(number);
+                return res.status(200).json({ messages });
+
+            case 'delete':
+                // DELETE /api/phone?action=delete&number=...
+                if (req.method !== 'DELETE') {
+                    return res.status(405).json({ error: 'Method not allowed' });
+                }
+                if (!number) {
+                    return res.status(400).json({ error: 'Number required' });
+                }
+                await smsService.deleteNumber(number);
+                return res.status(200).json({ success: true });
+
+            case 'simulate':
+                // POST /api/phone?action=simulate&number=...
+                if (req.method !== 'POST') {
+                    return res.status(405).json({ error: 'Method not allowed' });
+                }
+                if (!number) {
+                    return res.status(400).json({ error: 'Number required' });
+                }
+                const { body, from } = req.body;
+                const message = smsService.addMessage(number, {
+                    body: body || 'Test message',
+                    from: from || 'System',
+                    timestamp: new Date().toISOString()
+                });
+                socketService.emitSms(number, message);
+                return res.status(200).json(message);
+
+            default:
+                return res.status(400).json({ error: 'Invalid action' });
+        }
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('[Phone Route Error]:', error);
+        return res.status(500).json({
+            error: error.message || 'Internal server error',
+            details: error.toString()
+        });
     }
-});
-
-// GET /api/phone/:number
-router.get('/:number', async (req, res) => {
-    try {
-        const messages = await smsService.getMessages(req.params.number);
-        res.json({ messages });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// DELETE /api/phone/:number
-router.delete('/:number', (req, res) => {
-    smsService.deleteNumber(req.params.number);
-    res.json({ success: true });
-});
-
-// POST /api/phone/:number/send (Simulation trigger)
-router.post('/:number/send', (req, res) => {
-    const { body, from } = req.body;
-    const message = smsService.addMessage(req.params.number, {
-        body: body || 'Test message',
-        from: from || 'System',
-        timestamp: new Date().toISOString()
-    });
-    socketService.emitSms(req.params.number, message);
-    res.json(message);
 });
 
 module.exports = router;
+
