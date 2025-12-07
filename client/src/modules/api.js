@@ -10,68 +10,68 @@ const api = axios.create({
 
 export const emailApi = {
     create: async () => {
-        const response = await api.post('/email/new');
+        const response = await api.post('/email?action=new');
+        return response.data;
+    },
+    sync: async (address) => {
+        const response = await api.post(`/email?action=sync&address=${encodeURIComponent(address)}`);
         return response.data;
     },
     getMessages: async (address) => {
-        const response = await api.get(`/email/${address}`);
+        const response = await api.get(`/email?action=messages&address=${encodeURIComponent(address)}`);
         return response.data;
     },
     delete: async (address) => {
-        const response = await api.delete(`/email/${address}`);
-        return response.data;
-    },
-    getMessage: async (address, id) => {
-        const response = await api.get(`/email/${address}/${id}`);
+        const response = await api.delete(`/email?action=delete&address=${encodeURIComponent(address)}`);
         return response.data;
     }
 };
 
 export const phoneApi = {
     create: async () => {
-        const response = await api.post('/phone/new');
+        const response = await api.post('/phone?action=new');
         return response.data;
     },
     getMessages: async (number) => {
-        const response = await api.get(`/phone/${number}`);
+        const response = await api.get(`/phone?action=messages&number=${encodeURIComponent(number)}`);
         return response.data;
     },
     delete: async (number) => {
-        const response = await api.delete(`/phone/${number}`);
+        const response = await api.delete(`/phone?action=delete&number=${encodeURIComponent(number)}`);
         return response.data;
     },
-    send: async (number, data) => {
-        const response = await api.post(`/phone/${number}/send`, data);
+    simulate: async (number) => {
+        const response = await api.post(`/phone?action=simulate&number=${encodeURIComponent(number)}`);
         return response.data;
     }
 };
 
 export const cardApi = {
     create: async () => {
-        const response = await api.post('/card/new');
+        const response = await api.post('/card?action=new');
         return response.data;
     },
-    regenerate: async (id) => {
-        const response = await api.post(`/card/${id}/regenerate`);
+    get: async (id) => {
+        const response = await api.get(`/card?action=get&id=${encodeURIComponent(id)}`);
         return response.data;
     },
     toggleLock: async (id) => {
-        const response = await api.post(`/card/${id}/lock`);
+        const response = await api.post(`/card?action=lock&id=${encodeURIComponent(id)}`);
         return response.data;
     },
     getTransactions: async (id) => {
-        const response = await api.get(`/card/${id}/transactions`);
+        const response = await api.get(`/card?action=transactions&id=${encodeURIComponent(id)}`);
+        return response.data;
+    },
+    simulate: async (id) => {
+        const response = await api.post(`/card?action=simulate&id=${encodeURIComponent(id)}`);
         return response.data;
     }
 };
 
 export const settingsApi = {
     clear: async () => {
-        const response = await api.post('/settings/clear');
-        return response.data;
-    },
-    setTTL: async (service, ttl) => {
-        const response = await api.post('/settings/ttl', { service, ttl });
+        const response = await api.post('/settings?action=clear');
         return response.data;
     }
 };
