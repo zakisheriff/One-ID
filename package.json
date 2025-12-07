@@ -1,13 +1,17 @@
 {
-    "name": "imposter-root",
+    "name": "one-id-root",
     "version": "1.0.0",
-    "description": "Root script to run Imposter client and server",
+    "description": "Root script to run One ID client and server",
     "scripts": {
         "install:all": "npm install && cd client && npm install && cd ../server && npm install",
         "dev:client": "cd client && npm run dev",
         "dev:server": "cd server && npm run dev",
         "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
         "start": "cd server && npm start"
+    },
+    "dependencies": {
+        "@supabase/supabase-js": "^2.86.2",
+        "axios": "^1.13.2"
     },
     "devDependencies": {
         "concurrently": "^8.2.2"

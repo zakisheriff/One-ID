@@ -6,7 +6,7 @@ const Footer = () => {
         <footer className="footer">
             <div className="footer-content">
                 <div className="footer-left">
-                    <span className="footer-logo">Imposter</span>
+                    <span className="footer-logo">One ID</span>
                     <span className="footer-copyright">© {new Date().getFullYear()} All rights reserved.</span>
                 </div>
                 <div className="footer-links">

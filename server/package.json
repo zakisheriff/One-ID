@@ -1,7 +1,7 @@
 {
-  "name": "imposter-server",
+  "name": "one-id-server",
   "version": "1.0.0",
-  "description": "Server for Imposter - Safe Identity Lab Simulation",
+  "description": "Server for One ID - Safe Identity Lab Simulation",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

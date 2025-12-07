@@ -1,6 +1,6 @@
-# Deployment Guide - Imposter
+# Deployment Guide - One ID
 
-Complete guide to deploy Imposter to production using Vercel (frontend) and Railway (backend).
+Complete guide to deploy One ID to production using Vercel (frontend) and Railway (backend).
 
 ## Prerequisites
 
@@ -16,7 +16,7 @@ Complete guide to deploy Imposter to production using Vercel (frontend) and Rail
 2. Click "New Project"
 3. Select "Deploy from GitHub repo"
 4. Connect your GitHub account if not already connected
-5. Select the `Imposter` repository
+5. Select the `One ID` repository
 
 ### Step 2: Configure Service
 
@@ -258,11 +258,11 @@ Both Vercel and Railway will automatically redeploy on push to `main` branch.
 1. Go to [Render Dashboard](https://dashboard.render.com/)
 2. Click "New +" → "Web Service"
 3. Connect your GitHub repository
-4. Select the `Imposter` repository
+4. Select the `One ID` repository
 
 ### Step 2: Configure Service
 
-- **Name:** `imposter-backend` (or your choice)
+- **Name:** `one-id-backend` (or your choice)
 - **Region:** Oregon (or closest to you)
 - **Branch:** `main`
 - **Root Directory:** Leave empty
@@ -292,7 +292,7 @@ STRIPE_SECRET_KEY=sk_live_your_key
 
 1. Click "Create Web Service"
 2. Wait for deployment (3-5 minutes)
-3. Copy your backend URL: `https://imposter-backend-xxxx.onrender.com`
+3. Copy your backend URL: `https://one-id-backend-xxxx.onrender.com`
 
 ## Part 2: Deploy Frontend to Vercel
 
@@ -315,7 +315,7 @@ STRIPE_SECRET_KEY=sk_live_your_key
 Click "Environment Variables":
 
 ```
-VITE_API_URL=https://imposter-backend-xxxx.onrender.com/api
+VITE_API_URL=https://one-id-backend-xxxx.onrender.com/api
 ```
 
 Replace `xxxx` with your actual Render backend URL from Part 1.
@@ -331,7 +331,7 @@ Replace `xxxx` with your actual Render backend URL from Part 1.
 ### Step 1: Update Environment Variable
 
 1. Go back to Render Dashboard
-2. Open your `imposter-backend` service
+2. Open your `one-id-backend` service
 3. Go to "Environment" tab
 4. Add new environment variable:
 

@@ -154,18 +154,6 @@ const Settings = () => {
                 )}
             </div>
 
-            <div className="about-section" style={{ maxWidth: '600px', margin: '32px auto', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '12px' }}>
-                    <Info size={16} />
-                    <p style={{ margin: 0 }}><strong>Imposter Lab Simulation</strong></p>
-                </div>
-                <p>Version 1.1.0 (Real Email Enabled)</p>
-                <div style={{ marginTop: '16px', lineHeight: '1.6' }}>
-                    <strong>Email:</strong> Uses real temporary email addresses via Mail.tm.<br />
-                    <strong>SMS:</strong> Simulated (requires Twilio for real messages).<br />
-                    <strong>Cards:</strong> Simulated (Luhn-valid numbers).
-                </div>
-            </div>
         </div>
     );
 };

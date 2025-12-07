@@ -12,7 +12,7 @@ const Navbar = () => {
                 {/* Left Section - Logo */}
                 <div className="navbar-left">
                     <NavLink to="/" className="navbar-logo">
-                        <span className="navbar-logo-text">Imposter</span>
+                        <span className="navbar-logo-text">One ID</span>
                         <span className="badge text-gradient" style={{
                             background: 'none',
                             WebkitTextFillColor: 'initial',

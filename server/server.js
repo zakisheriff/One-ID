@@ -49,7 +49,7 @@ app.use('/api/settings', settingsRoutes);
 
 // Root route
 app.get('/', (req, res) => {
-    res.send('Imposter Server is running');
+    res.send('One ID Server is running');
 });
 
 // --- Simulation Logic ---

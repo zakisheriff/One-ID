@@ -1,6 +1,6 @@
-# Imposter Server
+# One ID Server
 
-Node.js Express server providing the API and simulation logic for Imposter.
+Node.js Express server providing the API and simulation logic for One ID.
 
 ## API Endpoints
 

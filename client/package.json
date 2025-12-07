@@ -1,5 +1,5 @@
 {
-    "name": "imposter-client",
+    "name": "one-id-client",
     "private": true,
     "version": "0.0.0",
     "type": "module",
@@ -11,6 +11,7 @@
         "test": "jest"
     },
     "dependencies": {
+        "@supabase/supabase-js": "^2.86.2",
         "axios": "^1.6.2",
         "dompurify": "^3.3.0",
         "lucide-react": "^0.555.0",

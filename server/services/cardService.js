@@ -33,8 +33,8 @@ class CardService {
             try {
                 // Create a cardholder first (required for issuing)
                 const cardholder = await this.stripe.issuing.cardholders.create({
-                    name: 'Imposter User',
-                    email: 'user@imposter.lab',
+                    name: 'One ID User',
+                    email: 'user@oneid.lab',
                     status: 'active',
                     type: 'individual',
                     billing: {

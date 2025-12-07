@@ -1,4 +1,4 @@
-# <div align="center">Imposter</div>
+# <div align="center">One ID</div>
 
 <div align="center">
 <strong>The Safe Identity Lab for Privacy-Conscious Testing</strong>
@@ -25,13 +25,13 @@
 
 > **"Your privacy playground for testing without compromise."**
 >
-> Imposter isn't just another temporary email service. It's a complete identity simulation lab that lets you test services, sign up for trials, and protect your real identity — all with a stunning, modern interface that feels premium.
+> One ID isn't just another temporary email service. It's a complete identity simulation lab that lets you test services, sign up for trials, and protect your real identity — all with a stunning, modern interface that feels premium.
 
 ---
 
 ## 🌟 Vision
 
-Imposter's purpose is to be:
+One ID's purpose is to be:
 
 - **A complete privacy toolkit** for temporary identities
 - **A beautifully designed web application** with glassmorphism aesthetics
@@ -39,10 +39,10 @@ Imposter's purpose is to be:
 
 ---
 
-## ✨ Why Imposter?
+## ✨ Why One ID?
 
 Stop using sketchy temporary email sites filled with ads.  
-Imposter is built from the ground up to be **fast, private, and beautifully designed**.
+One ID is built from the ground up to be **fast, private, and beautifully designed**.
 
 ---
 
@@ -137,7 +137,7 @@ Imposter is built from the ground up to be **fast, private, and beautifully desi
 ## 📁 Project Structure
 
 ```
-Imposter/
+One ID/
 ├── client/                 # React + Vite frontend
 │   ├── src/
 │   │   ├── components/     # Reusable UI components
@@ -178,8 +178,8 @@ Imposter/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/zakisheriff/Imposter.git
-cd Imposter
+git clone https://github.com/zakisheriff/One ID.git
+cd One ID
 ```
 
 ### 2. Install Dependencies
@@ -264,7 +264,7 @@ Both platforms offer generous free tiers!
 
 ## ⚠️ Disclaimer
 
-Imposter is an **educational and testing tool**. 
+One ID is an **educational and testing tool**. 
 
 - **Email:** Uses Mail.tm API for real temporary emails
 - **SMS & Cards:** Simulated for testing purposes only
@@ -280,7 +280,7 @@ Imposter is an **educational and testing tool**.
 
 ## ☕️ Support the Project
 
-If Imposter helped you protect your privacy or saved you time:
+If One ID helped you protect your privacy or saved you time:
 
 - Consider buying me a coffee ☕
 - Star the repository ⭐
